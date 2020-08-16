@@ -1,4 +1,25 @@
 #!/usr/bin/env python3
+""" MIDI Keyboard as a computer keyboard, where fast-presses generate upper
+case letters.
+
+Proof of concept.
+
+This program is free software: you can redistribute it and/or modify it under
+the terms of the GNU General Public License as published by the Free Software
+Foundation, either version 3 of the License, or (at your option) any later
+version.
+This program is distributed in the hope that it will be useful, but WITHOUT
+ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+You should have received a copy of the GNU General Public License along with
+this program. If not, see <http://www.gnu.org/licenses/>.
+"""
+
+__author__ = "Christoph Siedentop"
+__copyright__ = "Copyright 2020, Christoph Siedentop"
+__date__ = "2020-08-16"
+__license__ = "GPLv3"
+
 import mido
 from pynput.keyboard import Key, Controller
 from contextlib import nullcontext
@@ -51,6 +72,7 @@ while True:
     msg = inport.receive()
     if msg.type == "note_on":
         char = note2char(msg.note)
+        # Type upper case letters (i.e. hold down Shift) if velocity is high.
         if msg.velocity > 70:
             modifier_context = keyboard.pressed(Key.shift)
         else:
